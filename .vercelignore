@@ -1,0 +1,5 @@
+.env
+make-config.js
+migration.sql
+schema.sql
+.gitignore

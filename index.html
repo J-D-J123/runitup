@@ -1,0 +1,679 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#4f9a1e">
+<title>Run Club</title>
+<style>
+  :root {
+    --text: #333333;
+    --muted: #666666;
+    --link: #1a5fb4;
+    --border: #b9c4cc;
+    --green1: #8cc63f;
+    --green2: #4f9a1e;
+    --green-dark: #2f6b10;
+    --h1: #e1f2c9;
+    --h2: #c3e59b;
+    --h3: #9fd36a;
+    --h4: #6fb43f;
+    --h5: #3d7a1a;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; -webkit-tap-highlight-color: rgba(79,154,30,.25); }
+  body {
+    margin: 0;
+    background: #dfe7ec url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4'%3E%3Crect width='2' height='2' fill='%23d3dde4'/%3E%3Crect x='2' y='2' width='2' height='2' fill='%23d3dde4'/%3E%3C/svg%3E");
+    color: var(--text);
+    font: 14px/1.5 Verdana, Tahoma, Geneva, Arial, sans-serif;
+    overflow-x: hidden;
+  }
+  a { color: var(--link); }
+  #site {
+    max-width: 680px; margin: 0 auto; background: #fff;
+    border-left: 1px solid var(--border); border-right: 1px solid var(--border);
+    box-shadow: 0 0 12px rgba(0,0,0,.25); min-height: 100vh; min-height: 100dvh;
+  }
+  header.top {
+    padding: 14px max(16px, env(safe-area-inset-right)) 10px max(16px, env(safe-area-inset-left));
+    padding-top: max(14px, env(safe-area-inset-top));
+    background: linear-gradient(#a6d95a, #4f9a1e);
+    border-bottom: 3px solid var(--green-dark);
+  }
+  header.top a.logo {
+    color: #fff; text-decoration: none; font: bold 28px/1 Georgia, "Times New Roman", serif;
+    text-shadow: 1px 2px 2px rgba(0,0,0,.45);
+  }
+  header.top a.logo small { display: block; font: italic 12px Verdana, sans-serif; margin-top: 4px; text-shadow: 1px 1px 1px rgba(0,0,0,.4); }
+  nav.bar {
+    background: linear-gradient(#f8f8f8, #dcdcdc); border-bottom: 1px solid #aaa;
+    padding: 0 max(16px, env(safe-area-inset-right)) 0 max(16px, env(safe-area-inset-left)); font-size: 13px;
+  }
+  nav.bar a { display: inline-block; padding: 14px 16px 13px 0; min-height: 44px; font-weight: bold; text-decoration: none; }
+  nav.bar a:hover { text-decoration: underline; }
+  main { padding: 16px max(16px, env(safe-area-inset-right)) 16px max(16px, env(safe-area-inset-left)); }
+  footer { padding: 12px 16px calc(20px + env(safe-area-inset-bottom)); border-top: 1px solid #ddd; background: #f2f2f2; font-size: 11px; color: var(--muted); text-align: center; }
+
+  h1 { font: bold 24px/1.2 Georgia, "Times New Roman", serif; margin: 0 0 6px; color: var(--green-dark); overflow-wrap: anywhere; }
+  h2 {
+    font: bold 14px/1.3 Verdana, Tahoma, sans-serif; margin: 0 0 6px; color: #fff;
+    background: linear-gradient(#7fbf3a, #4f9a1e); padding: 6px 10px; border: 1px solid var(--green-dark);
+    text-shadow: 0 1px 0 rgba(0,0,0,.4); border-radius: 4px 4px 0 0;
+  }
+  h3 { font: bold 15px Georgia, serif; margin: 0 0 4px; color: var(--green-dark); }
+  .sub { color: var(--muted); margin: 0 0 12px; font-size: 12px; }
+  .card { border: 1px solid var(--border); background: #fafcf7; margin-bottom: 18px; border-radius: 4px; }
+  .card > :not(h2) { margin-left: 12px; margin-right: 12px; }
+  .card > h2 { margin: 0 0 10px; }
+  .card > :last-child { margin-bottom: 12px; }
+  label { display: block; font-weight: bold; margin-bottom: 4px; font-size: 12px; }
+  input[type=text] {
+    width: 100%; min-height: 46px; padding: 6px 10px; font: 16px Verdana, sans-serif; border-radius: 0; -webkit-appearance: none; appearance: none; color: var(--text);
+    background: #fff; border: 1px solid #889; border-top-color: #667; box-shadow: inset 1px 2px 3px rgba(0,0,0,.15);
+  }
+  input[type=text]:focus { outline: 2px solid #f5c542; background: #ffffe8; }
+  button:focus-visible, a:focus-visible { outline: 2px dotted #000; outline-offset: 2px; }
+  .row { display: flex; gap: 8px; margin-top: 12px; }
+  .row button:not(.primary) { flex: 0 1 auto; }
+  button {
+    font: bold 14px Verdana, Tahoma, sans-serif; min-height: 46px; padding: 0 16px; cursor: pointer; touch-action: manipulation;
+    color: #333; text-shadow: 0 1px 0 #fff; border: 1px solid #8a8a8a; border-radius: 5px;
+    background: linear-gradient(#fdfdfd, #d4d4d4); box-shadow: 0 1px 1px rgba(0,0,0,.25), inset 0 1px 0 #fff;
+  }
+  button:hover { background: linear-gradient(#fff, #e2e2e2); }
+  button:active { background: linear-gradient(#d4d4d4, #eee); box-shadow: inset 0 1px 3px rgba(0,0,0,.4); }
+  button.primary {
+    flex: 1; color: #fff; text-shadow: 0 -1px 0 rgba(0,0,0,.45); border-color: var(--green-dark);
+    background: linear-gradient(#a6d95a, #4f9a1e 55%, #438a17);
+    box-shadow: 0 1px 2px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.5);
+  }
+  button.primary:hover { background: linear-gradient(#b8e46e, #5aa826 55%, #4a951b); }
+  button.big { font-size: 17px; min-height: 52px; padding: 0 26px; flex: none; }
+  button:disabled { opacity: .55; cursor: default; }
+  .status { min-height: 1.4em; margin: 8px 12px 0; font-size: 12px; color: var(--muted); }
+  .status.ok { color: #2a7d10; font-weight: bold; }
+  .status.err { color: #b00020; font-weight: bold; }
+  #fatal { margin: 12px 16px 0; padding: 8px 10px; background: #fff0f0; border: 1px solid #d99; }
+  [hidden] { display: none !important; }
+
+  /* homepage */
+  .hero {
+    padding: 18px 16px; margin-bottom: 18px; text-align: center; border: 1px solid #c9d8b3; border-radius: 6px;
+    background: linear-gradient(#fbfff3, #e6f3cc);
+  }
+  .hero h1 { font-size: 27px; }
+  .hero p { margin: 0 0 14px; }
+  .hero .row { justify-content: center; }
+  .features { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 18px; }
+  .features div { flex: 1 1 170px; border: 1px solid var(--border); background: #fff; padding: 10px; border-radius: 4px; font-size: 12px; }
+  .features b { display: block; color: var(--green-dark); font-size: 13px; margin-bottom: 2px; }
+  .steps { margin: 0 0 8px; padding-left: 2em; }
+  .steps li { margin: 4px 0; }
+  .glist { list-style: square; margin: 0 0 8px; padding: 0 0 0 2em; }
+  .glist li { margin: 6px 0; }
+  .back { display: inline-block; margin-bottom: 4px; padding: 10px 0; font-size: 13px; }
+
+  /* share */
+  .share-link { font-size: 16px; }
+  .row.tight { margin-top: 8px; }
+  .row.tight button { flex: 1; }
+
+  /* grids */
+  .grid {
+    display: grid; grid-template-columns: 38px repeat(7, minmax(0, 1fr)); gap: 1px;
+    margin: 10px 12px 0; padding: 1px; background: #aab; border: 1px solid #889;
+    user-select: none; -webkit-user-select: none; -webkit-touch-callout: none;
+  }
+  .grid.paint .cell { touch-action: none; } /* labels stay scrollable so the page never traps a finger */
+  .hd, .hl { font-size: 10px; color: var(--text); text-align: center; line-height: 1.15; background: linear-gradient(#f4f4f4, #d8d8d8); }
+  .hd { padding: 4px 0; }
+  .hd b { display: block; font-size: 11px; }
+  .hl { display: flex; align-items: center; justify-content: flex-end; padding-right: 3px; white-space: nowrap; }
+  .cell {
+    min-height: 38px; background: #fff; border: 0; border-radius: 0; padding: 0;
+    font: bold 12px Verdana, sans-serif; color: var(--text); text-shadow: none; box-shadow: none;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .grid.paint .cell { cursor: pointer; }
+  .cell.on { background: linear-gradient(#9fd36a, #4f9a1e); color: #fff; text-shadow: 0 1px 1px rgba(0,0,0,.5); }
+  button.heat { background: #fff; }
+  @media (hover: hover) { button.heat:hover:not([data-n]) { background: #fff8d0; } }
+  .heat[data-n="1"] { background: var(--h1); }
+  .heat[data-n="2"] { background: var(--h2); }
+  .heat[data-n="3"] { background: var(--h3); }
+  .heat[data-n="4"] { background: var(--h4); color: #fff; text-shadow: 0 1px 1px rgba(0,0,0,.5); }
+  .heat[data-n="5"] { background: var(--h5); color: #fff; text-shadow: 0 1px 1px rgba(0,0,0,.5); }
+  .heat.picked { outline: 2px solid #e8a200; outline-offset: -2px; }
+
+  .detail { margin-top: 10px; padding: 8px 10px; background: #fffbe0; border: 1px solid #e6d98a; font-size: 13px; overflow-wrap: anywhere; }
+  .detail:empty { display: none; }
+  .card > h2 + p + .grid + .detail { margin-bottom: 0; }
+  .best { list-style: none; padding: 0; margin-top: 8px; display: block; }
+  .best li { padding: 8px 10px; margin-bottom: 6px; background: #fff; border: 1px solid var(--border); border-left: 4px solid var(--green2); }
+  .best .when { font-weight: bold; }
+  .best .who { color: var(--muted); font-size: 12px; overflow-wrap: anywhere; }
+  .muted { color: var(--muted); }
+  .badge {
+    display: inline-block; min-width: 1.7em; text-align: center; margin-right: 6px; padding: 0 5px;
+    border-radius: 9px; background: linear-gradient(#a6d95a, #4f9a1e); border: 1px solid var(--green-dark);
+    color: #fff; font-weight: bold; font-size: 12px; text-shadow: 0 1px 0 rgba(0,0,0,.4);
+  }
+
+  @media (max-width: 400px) {
+    main { padding-top: 12px; }
+    .card > :not(h2) { margin-left: 10px; margin-right: 10px; }
+    .grid { grid-template-columns: 32px repeat(7, minmax(0, 1fr)); margin-left: 6px; margin-right: 6px; }
+    .hd { font-size: 9px; }
+    .hd b { font-size: 10px; }
+    .hl { font-size: 9px; padding-right: 2px; }
+    .cell { font-size: 11px; min-height: 36px; }
+    h1, .hero h1 { font-size: 22px; }
+    button.big { width: 100%; }
+  }
+  @media (max-width: 680px) {
+    #site { border-left: 0; border-right: 0; box-shadow: none; }
+  }
+  @media (hover: none) { button:hover { background: linear-gradient(#fdfdfd, #d4d4d4); } button.primary:hover { background: linear-gradient(#a6d95a, #4f9a1e 55%, #438a17); } }
+</style>
+</head>
+<body>
+<div id="site">
+<header class="top">
+  <a class="logo" href="#/">Run it Up!</a>
+</header>
+<nav class="bar"><a href="#/">Home</a></nav>
+<p id="fatal" class="status err" role="alert" hidden></p>
+<main>
+
+  <!-- ===== Landing ===== -->
+  <div id="view-landing" hidden>
+    <div class="features">
+      <div><b>1. Make a group</b>Give your running group a name. It takes ten seconds.</div>
+      <div><b>2. Invite friends</b>Send them the link by text or email. No sign up needed!</div>
+      <div><b>3. Pick a time</b>Everyone taps their free hours and the best times show up.</div>
+    </div>
+
+    <section class="card" id="create">
+      <h2>Create a running group</h2>
+      <form id="create-form" autocomplete="off">
+        <label for="group-name">Group name</label>
+        <input id="group-name" type="text" maxlength="60" enterkeyhint="go" autocapitalize="words" placeholder="e.g. Saturday Long Run Crew">
+        <div class="row">
+          <button id="create-btn" class="primary" type="submit">Create group</button>
+        </div>
+        <p id="create-status" class="status" style="margin-left:0" role="status" aria-live="polite"></p>
+      </form>
+    </section>
+
+    <section class="card" id="recent-card" hidden>
+      <h2>Your groups</h2>
+      <ul id="recent" class="glist"></ul>
+    </section>
+  </div>
+
+  <!-- ===== Group ===== -->
+  <div id="view-group" hidden>
+    <a class="back" href="#/">&laquo; Back to home</a>
+    <h1 id="group-title"></h1>
+    <p class="sub">Mark when you're free this week. See when everyone overlaps.</p>
+
+    <section class="card">
+      <h2>Invite friends</h2>
+      <p class="sub" style="margin:0 0 10px">Anyone with this link can add their times. No account needed.</p>
+      <input id="share-link" class="share-link" type="text" readonly inputmode="none" aria-label="Invite link">
+      <div class="row tight">
+        <button id="copy-btn" type="button">Copy link</button>
+        <button id="share-btn" type="button" hidden>Share…</button>
+      </div>
+      <p id="share-status" class="status" role="status" aria-live="polite"></p>
+    </section>
+
+    <section class="card">
+      <label for="name">Your name</label>
+      <input id="name" type="text" maxlength="40" enterkeyhint="done" autocapitalize="words" autocomplete="given-name" placeholder="e.g. Sam">
+    </section>
+
+    <section class="card">
+      <h2>Your availability</h2>
+      <p class="sub" style="margin:0">Tap or drag to mark the hours you're free.</p>
+      <div id="mine" class="grid paint" aria-label="Your availability"></div>
+      <div class="row">
+        <button id="clear" type="button">Clear</button>
+        <button id="save" class="primary" type="button">Save</button>
+      </div>
+      <p id="status" class="status" role="status" aria-live="polite"></p>
+    </section>
+
+    <section class="card">
+      <h2>When everyone's free</h2>
+      <p class="sub" style="margin:0">Darker green = more people. Tap a cell to see who.</p>
+      <div id="all" class="grid" aria-label="Everyone's availability"></div>
+      <div id="detail" class="detail" aria-live="polite"></div>
+      <h2 style="margin-top:18px">Best times</h2>
+      <ul id="best" class="best"></ul>
+    </section>
+  </div>
+
+  <!-- ===== Not found ===== -->
+  <div id="view-missing" hidden>
+    <div class="hero">
+      <h1>Group not found</h1>
+      <p class="sub">That invite link doesn't match a group. Check it with whoever sent it, or start your own.</p>
+      <a class="back" href="#/">&laquo; Start a group</a>
+    </div>
+  </div>
+
+</main>
+</div>
+
+<script src="config.js"></script>
+<!-- supabase-js 2.45.4, self-hosted in vendor/ so ad blockers and CDN outages can't break the page -->
+<script src="vendor/supabase.js"></script>
+<script>
+(function () {
+  "use strict";
+
+  var CFG = window.RUNCLUB_CONFIG || {};
+  var SUPABASE_URL = CFG.url || "";
+  var SUPABASE_KEY = CFG.key || ""; // publishable key only, from config.js (generated from .env)
+  var FIRST_HOUR = 6, LAST_HOUR = 21; // 6am .. 9pm
+  var CODE_RE = /^[a-f0-9]{12}$/;
+
+  function fatal(msg) {
+    var f = document.getElementById("fatal");
+    f.textContent = msg; f.hidden = false;
+  }
+  window.addEventListener("error", function (e) { fatal("Something broke: " + e.message); });
+
+  var db = null;
+  if (!SUPABASE_URL || !SUPABASE_KEY) {
+    fatal("Setup needed: put your keys in .env and run: node make-config.js");
+  } else if (!window.supabase || !window.supabase.createClient) {
+    fatal("Couldn't load the Supabase library (vendor/supabase.js). Is the vendor folder deployed and are you using http, not a preview pane?");
+  } else {
+    db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  }
+  function rpc(fn, args) {
+    if (!db) return Promise.reject(new Error("Supabase isn't configured"));
+    return db.rpc(fn, args);
+  }
+
+  // ---------- helpers ----------
+  function $(id) { return document.getElementById(id); }
+  function pad(n) { return (n < 10 ? "0" : "") + n; }
+  function isoDate(d) { return d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate()); }
+  function hourLabel(h) { return (h % 12 === 0 ? 12 : h % 12) + (h < 12 ? "am" : "pm"); }
+  function key(day, hour) { return day + "|" + hour; }
+  function normName(s) { return (s || "").trim().replace(/\s+/g, " ").toLowerCase(); }
+  function displayName(s) { return s.replace(/(^|[\s\-'])(\p{L})/gu, function (m, a, b) { return a + b.toUpperCase(); }); }
+  function el(tag, cls, text) {
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text != null) e.textContent = text;
+    return e;
+  }
+  function getStore(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+  function setStore(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+  function errMsg(err) { return err && err.message ? err.message : String(err); }
+  function setMsg(node, msg, kind) {
+    node.textContent = msg;
+    node.className = "status" + (kind ? " " + kind : "");
+  }
+
+  var days = [];
+  (function () {
+    var t = new Date(); t.setHours(0, 0, 0, 0);
+    for (var i = 0; i < 7; i++) {
+      var d = new Date(t); d.setDate(t.getDate() + i);
+      days.push({
+        iso: isoDate(d),
+        wd: d.toLocaleDateString(undefined, { weekday: "short" }),
+        md: d.getDate() + "/" + (d.getMonth() + 1)
+      });
+    }
+  })();
+  var firstDay = days[0].iso, lastDay = days[6].iso;
+  var hours = [];
+  for (var h = FIRST_HOUR; h <= LAST_HOUR; h++) hours.push(h);
+
+  // ---------- saved groups (this browser only) ----------
+  function savedGroups() {
+    try { var v = JSON.parse(getStore("runclub-groups") || "[]"); return Array.isArray(v) ? v : []; }
+    catch (e) { return []; }
+  }
+  function rememberGroup(code, name) {
+    var list = savedGroups().filter(function (g) { return g.code !== code; });
+    list.unshift({ code: code, name: name });
+    setStore("runclub-groups", JSON.stringify(list.slice(0, 20)));
+  }
+
+  // ---------- views / routing ----------
+  var views = ["landing", "group", "missing"];
+  function show(name) {
+    views.forEach(function (v) { $("view-" + v).hidden = v !== name; });
+    window.scrollTo(0, 0);
+  }
+
+  var current = null; // { code, name }
+  var refreshTimer = null;
+
+  function route() {
+    clearInterval(refreshTimer);
+    current = null;
+    var m = /^#\/g\/([^\/?]+)/.exec(location.hash);
+    if (m) {
+      var code = m[1].toLowerCase();
+      if (CODE_RE.test(code)) return openGroup(code);
+      return show("missing");
+    }
+    showLanding();
+  }
+
+  // ---------- landing ----------
+  function showLanding() {
+    document.title = "Run Club";
+    var list = savedGroups(), ul = $("recent");
+    ul.textContent = "";
+    list.forEach(function (g) {
+      var li = el("li"), a = el("a", null, g.name);
+      a.href = "#/g/" + g.code;
+      li.appendChild(a);
+      ul.appendChild(li);
+    });
+    $("recent-card").hidden = !list.length;
+    show("landing");
+  }
+
+  $("create-form").addEventListener("submit", function (e) {
+    e.preventDefault();
+    var name = $("group-name").value.trim().replace(/\s+/g, " ");
+    var status = $("create-status"), btn = $("create-btn");
+    if (!name) { setMsg(status, "Give your group a name.", "err"); return; }
+    btn.disabled = true;
+    setMsg(status, "Creating…");
+    rpc("create_group", { p_name: name }).then(function (res) {
+      if (res.error) throw res.error;
+      var g = res.data && res.data[0];
+      if (!g) throw new Error("No group returned");
+      rememberGroup(g.code, g.name);
+      $("group-name").value = "";
+      setMsg(status, "");
+      location.hash = "#/g/" + g.code;
+    }).catch(function (err) {
+      setMsg(status, "Couldn't create group: " + errMsg(err), "err");
+    }).then(function () { btn.disabled = false; });
+  });
+
+  // ---------- grid building ----------
+  function buildGrid(root, cellClass, tag) {
+    root.textContent = "";
+    root.appendChild(el("div"));
+    days.forEach(function (d) {
+      var hd = el("div", "hd");
+      hd.appendChild(el("b", null, d.wd));
+      hd.appendChild(document.createTextNode(d.md));
+      root.appendChild(hd);
+    });
+    hours.forEach(function (hr) {
+      root.appendChild(el("div", "hl", hourLabel(hr)));
+      days.forEach(function (d) {
+        var c = el(tag, "cell " + cellClass);
+        if (tag === "button") c.type = "button";
+        c.dataset.day = d.iso;
+        c.dataset.hour = hr;
+        root.appendChild(c);
+      });
+    });
+  }
+
+  var mineEl = $("mine"), allEl = $("all");
+  buildGrid(mineEl, "mc", "div");
+  buildGrid(allEl, "heat", "button");
+
+  // ---------- group view ----------
+  var selected = new Set();
+  var slots = {};      // key -> [names]
+  var pickedKey = null;
+  var loadSeq = 0, loadTimer = null;
+
+  function inviteUrl(code) {
+    return location.href.split("#")[0] + "#/g/" + code;
+  }
+
+  function openGroup(code) {
+    show(null); // hide everything while loading
+    rpc("get_group", { p_code: code }).then(function (res) {
+      if (res.error) throw res.error;
+      if (!res.data) return show("missing");
+      current = { code: code, name: res.data };
+      rememberGroup(code, res.data);
+      document.title = res.data + " · Run Club";
+      $("group-title").textContent = res.data;
+      $("share-link").value = inviteUrl(code);
+      setMsg($("share-status"), "");
+      setMsg(statusEl, "");
+      selected = new Set();
+      slots = {};
+      pickedKey = null;
+      paintMine();
+      renderAll();
+      show("group");
+      loadMine();
+      loadAll();
+      refreshTimer = setInterval(loadAll, 30000);
+    }).catch(function (err) {
+      show("missing");
+      console.error(err);
+    });
+  }
+
+  // share
+  $("copy-btn").addEventListener("click", function () {
+    var input = $("share-link"), st = $("share-status");
+    function fallback() {
+      input.focus(); input.select();
+      try { document.execCommand("copy"); setMsg(st, "Link copied ✓", "ok"); }
+      catch (e) { setMsg(st, "Press and hold the link to copy it.", "err"); }
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(input.value)
+        .then(function () { setMsg(st, "Link copied ✓", "ok"); }, fallback);
+    } else fallback();
+  });
+  if (navigator.share) {
+    $("share-btn").hidden = false;
+    $("share-btn").addEventListener("click", function () {
+      if (!current) return;
+      navigator.share({
+        title: current.name,
+        text: "When are you free to run? Add your times for " + current.name + ":",
+        url: inviteUrl(current.code)
+      }).catch(function () {});
+    });
+  }
+  $("share-link").addEventListener("focus", function () { this.select(); });
+
+  // ---------- my availability ----------
+  function paintMine() {
+    var cells = mineEl.querySelectorAll(".mc");
+    for (var i = 0; i < cells.length; i++) {
+      var c = cells[i];
+      c.classList.toggle("on", selected.has(key(c.dataset.day, c.dataset.hour)));
+    }
+  }
+  function setCell(c, on) {
+    var k = key(c.dataset.day, c.dataset.hour);
+    if (on) selected.add(k); else selected.delete(k);
+    c.classList.toggle("on", on);
+  }
+
+  var painting = false, paintOn = true, lastCell = null;
+  function cellAt(x, y) {
+    var e = document.elementFromPoint(x, y);
+    return e && e.closest ? e.closest(".mc") : null;
+  }
+  mineEl.addEventListener("pointerdown", function (e) {
+    if (e.button !== undefined && e.button > 0) return;
+    var c = e.target.closest(".mc");
+    if (!c) return;
+    e.preventDefault();
+    painting = true;
+    paintOn = !selected.has(key(c.dataset.day, c.dataset.hour));
+    lastCell = c;
+    setCell(c, paintOn);
+    setMsg(statusEl, "");
+  });
+  mineEl.addEventListener("pointermove", function (e) {
+    if (!painting) return;
+    var c = cellAt(e.clientX, e.clientY);
+    if (c && c !== lastCell) { lastCell = c; setCell(c, paintOn); }
+  });
+  function stopPaint() { painting = false; lastCell = null; }
+  window.addEventListener("pointerup", stopPaint);
+  window.addEventListener("pointercancel", stopPaint);
+  mineEl.addEventListener("contextmenu", function (e) { e.preventDefault(); });
+
+  var statusEl = $("status");
+  var nameEl = $("name");
+  var saveBtn = $("save");
+  var clearBtn = $("clear");
+  nameEl.value = getStore("runclub-name") || "";
+
+  function loadMine() {
+    var n = normName(nameEl.value);
+    var seq = ++loadSeq;
+    selected = new Set();
+    paintMine();
+    if (!n || !current) return;
+    rpc("get_my_slots", { p_code: current.code, p_name: n, p_from: firstDay, p_to: lastDay })
+      .then(function (res) {
+        if (seq !== loadSeq) return; // a newer name change superseded this
+        if (res.error) { setMsg(statusEl, "Couldn't load your slots: " + res.error.message, "err"); return; }
+        res.data.forEach(function (r) { selected.add(key(r.day, r.hour)); });
+        paintMine();
+        setMsg(statusEl, res.data.length ? "Loaded your saved times." : "");
+      });
+  }
+  nameEl.addEventListener("input", function () {
+    setStore("runclub-name", nameEl.value);
+    clearTimeout(loadTimer);
+    loadTimer = setTimeout(loadMine, 400);
+  });
+
+  clearBtn.addEventListener("click", function () {
+    selected = new Set();
+    paintMine();
+    setMsg(statusEl, "Cleared. Press Save to confirm.");
+  });
+
+  saveBtn.addEventListener("click", function () {
+    var n = normName(nameEl.value);
+    if (!current) return;
+    if (!n) { setMsg(statusEl, "Enter your name first.", "err"); nameEl.focus(); return; }
+    if (n.length > 40) { setMsg(statusEl, "Name must be 40 characters or fewer.", "err"); return; }
+    saveBtn.disabled = clearBtn.disabled = true;
+    setMsg(statusEl, "Saving…");
+    var rows = [];
+    selected.forEach(function (k) {
+      var p = k.split("|");
+      rows.push({ day: p[0], hour: parseInt(p[1], 10) });
+    });
+    rpc("save_availability", {
+      p_code: current.code, p_name: n, p_from: firstDay, p_to: lastDay, p_slots: rows
+    }).then(function (res) {
+      if (res.error) throw res.error;
+      setMsg(statusEl, "Saved ✓", "ok");
+      return loadAll();
+    }).catch(function (err) {
+      setMsg(statusEl, "Save failed: " + errMsg(err), "err");
+    }).then(function () { saveBtn.disabled = clearBtn.disabled = false; });
+  });
+
+  // ---------- everyone ----------
+  var detailEl = $("detail");
+  var bestEl = $("best");
+
+  function loadAll() {
+    if (!current) return Promise.resolve();
+    var code = current.code;
+    return rpc("get_group_availability", { p_code: code, p_from: firstDay, p_to: lastDay })
+      .then(function (res) {
+        if (res.error) throw res.error;
+        if (!current || current.code !== code) return;
+        var m = {};
+        res.data.forEach(function (r) {
+          var seen = {};
+          m[key(r.day, r.hour)] = r.names.map(function (n) { return displayName(normName(n)); })
+            .filter(function (n) { return seen[n] ? false : (seen[n] = true); });
+        });
+        slots = m;
+        renderAll();
+      }).catch(function (err) {
+        detailEl.textContent = "Couldn't load everyone's times: " + errMsg(err);
+      });
+  }
+
+  function dayLabel(iso) {
+    var d = days.filter(function (x) { return x.iso === iso; })[0];
+    return d ? d.wd + " " + d.md : iso;
+  }
+  function slotLabel(k) {
+    var p = k.split("|");
+    return dayLabel(p[0]) + ", " + hourLabel(parseInt(p[1], 10));
+  }
+
+  function renderDetail() {
+    detailEl.textContent = "";
+    if (!pickedKey) return;
+    var names = slots[pickedKey] || [];
+    detailEl.appendChild(el("b", null, slotLabel(pickedKey)));
+    detailEl.appendChild(el("div", names.length ? "" : "muted",
+      names.length ? names.length + " free: " + names.slice().sort().join(", ") : "Nobody free yet."));
+  }
+
+  function renderAll() {
+    var cells = allEl.querySelectorAll(".heat");
+    for (var i = 0; i < cells.length; i++) {
+      var c = cells[i], k = key(c.dataset.day, c.dataset.hour);
+      var n = (slots[k] || []).length;
+      c.dataset.n = Math.min(n, 5);
+      c.textContent = n ? n : "";
+      c.classList.toggle("picked", k === pickedKey);
+    }
+    renderDetail();
+
+    var list = Object.keys(slots).filter(function (k) { return slots[k].length > 1; });
+    list.sort(function (a, b) {
+      return slots[b].length - slots[a].length || (a < b ? -1 : 1);
+    });
+    bestEl.textContent = "";
+    if (!list.length) {
+      bestEl.appendChild(el("li", "muted", "No overlaps yet. Share the link and get friends to add their times!"));
+      return;
+    }
+    list.slice(0, 3).forEach(function (k) {
+      var li = el("li");
+      var top = el("div", "when");
+      top.appendChild(el("span", "badge", String(slots[k].length)));
+      top.appendChild(document.createTextNode(slotLabel(k)));
+      li.appendChild(top);
+      li.appendChild(el("div", "who", slots[k].slice().sort().join(", ")));
+      bestEl.appendChild(li);
+    });
+  }
+
+  allEl.addEventListener("click", function (e) {
+    var c = e.target.closest(".heat");
+    if (!c) return;
+    pickedKey = key(c.dataset.day, c.dataset.hour);
+    renderAll();
+  });
+
+  // ---------- init ----------
+  window.addEventListener("hashchange", route);
+  route();
+})();
+</script>
+</body>
+</html>
